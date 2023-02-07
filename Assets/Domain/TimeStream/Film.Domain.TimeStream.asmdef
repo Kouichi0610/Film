@@ -1,0 +1,14 @@
+{
+    "name": "Film.Domain.TimeStream",
+    "rootNamespace": "Film.Domain.TimeStream",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Film.Domain.Transport",
+    "rootNamespace": "Film.Domain.Transport",
+    "references": [
+        "GUID:3bacffd7d37bd9b488738c63047c1060"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
