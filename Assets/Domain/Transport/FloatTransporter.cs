@@ -4,12 +4,12 @@ namespace Film.Domain.Transport
 {
     public interface FloatTransporter
     {
-        float Move(CurrentTime now);
+        float Move(WorldTime now);
     }
 
     public static class FloatTransporters
     {
-        public static FloatTransporter Linear(float from, float to, MoveTime moveTime)
+        public static FloatTransporter Linear(float from, float to, ValidatedTime moveTime)
         {
             return new FloatLinearTransporter(from, to, moveTime);
         }

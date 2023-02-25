@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Tests/PresentationTest/Airframe/AirframeTestScene.unity
+    guid: dbe95467bca0efe4db2e494bda580d44
   m_configObjects: {}

@@ -2,31 +2,31 @@
 namespace Film.Domain.TimeStream
 {
     /// <summary>
-    /// ゲーム開始から進んだ時間
+    /// ゲームを開始してからの経過時間
     /// </summary>
-    public struct CurrentTime
+    public struct WorldTime
     {
         public float Seconds;
 
-        internal CurrentTime(float time)
+        internal WorldTime(float time)
         {
             Seconds = time;
         }
 
-        public static CurrentTime FromFloat(float time)
+        public static WorldTime FromFloat(float time)
         {
-           return new CurrentTime(time);
+           return new WorldTime(time);
         }
 
-        internal CurrentTime Add(DeltaTime delta)
+        internal WorldTime Add(DeltaTime delta)
         {
-            return new CurrentTime(Seconds + delta.Seconds);
+            return new WorldTime(Seconds + delta.Seconds);
         }
-        internal CurrentTime Sub(DeltaTime delta)
+        internal WorldTime Sub(DeltaTime delta)
         {
             var next = Seconds - delta.Seconds;
             if (next < 0) next = 0;
-            return new CurrentTime(next);
+            return new WorldTime(next);
         }
 
         public override int GetHashCode()
@@ -35,7 +35,7 @@ namespace Film.Domain.TimeStream
         }
         public override bool Equals(object obj)
         {
-            if (!(obj is CurrentTime)) return false;
+            if (!(obj is WorldTime)) return false;
             return GetHashCode() == obj.GetHashCode();
         }
 
