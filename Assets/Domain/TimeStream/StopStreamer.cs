@@ -3,10 +3,10 @@ namespace Film.Domain.TimeStream
 {
     internal class StopStreamer : TimeStreamer
     {
-        CurrentTime TimeStreamer.Now => now;
-        readonly CurrentTime now;
+        WorldTime TimeStreamer.Now => now;
+        readonly WorldTime now;
 
-        internal StopStreamer(CurrentTime now)
+        internal StopStreamer(WorldTime now)
         {
             this.now = now;
         }

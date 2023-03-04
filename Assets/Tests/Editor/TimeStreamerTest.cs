@@ -30,7 +30,7 @@ namespace Film.Tests
             var streamer = TimeStreamerFactory.CreateStart();
             var delta = DeltaTime.FromFloat(1.0f);
             streamer.Stream(delta);
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(1.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(1.0f)));
         }
 
         [Test]
@@ -40,9 +40,9 @@ namespace Film.Tests
             var delta = DeltaTime.FromFloat(1.0f);
             streamer.Stream(delta);
             streamer = streamer.ToFastMode(2.0);
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(1.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(1.0f)));
             streamer.Stream(delta);
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(3.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(3.0f)));
         }
 
         [Test]
@@ -67,9 +67,9 @@ namespace Film.Tests
             var delta = DeltaTime.FromFloat(1.0f);
             streamer.Stream(delta);
             streamer = streamer.ToSlowMode(0.5);
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(1.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(1.0f)));
             streamer.Stream(delta);
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(1.5f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(1.5f)));
         }
 
         [Test]
@@ -98,9 +98,9 @@ namespace Film.Tests
             streamer = streamer.ToFastMode(2.0);
             streamer.Stream(delta);
             streamer = streamer.ToSequential();
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(2.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(2.0f)));
             streamer.Stream(delta);
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(3.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(3.0f)));
         }
 
         [Test]
@@ -110,9 +110,9 @@ namespace Film.Tests
             var delta = DeltaTime.FromFloat(1.0f);
             streamer.Stream(delta);
             streamer = streamer.ToStopMode();
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(1.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(1.0f)));
             streamer.Stream(delta);
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(1.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(1.0f)));
         }
 
         [Test]
@@ -122,10 +122,10 @@ namespace Film.Tests
             var tenSeconds = DeltaTime.FromFloat(10.0f);
             streamer.Stream(tenSeconds);
             streamer = streamer.ToReverseMove();
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(10.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(10.0f)));
             var oneSeconds = DeltaTime.FromFloat(1.0f);
             streamer.Stream(oneSeconds);
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(9.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(9.0f)));
         }
 
         [Test]
@@ -134,9 +134,9 @@ namespace Film.Tests
             var streamer = TimeStreamerFactory.CreateStart();
             streamer.Stream(DeltaTime.FromFloat(1.0f));
             streamer = streamer.ToReverseMove();
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(1.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(1.0f)));
             streamer.Stream(DeltaTime.FromFloat(2.0f));
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(0.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(0.0f)));
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace Film.Tests
             streamer = streamer.ToReverseMove(0.5);
             streamer.Stream(DeltaTime.FromFloat(1.0f));
 
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(9.5f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(9.5f)));
         }
 
         [Test]
@@ -169,9 +169,9 @@ namespace Film.Tests
         {
             var streamer = TimeStreamerFactory.CreateStart();
             streamer = streamer.Skip(DeltaTime.FromFloat(10.0f));
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(10.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(10.0f)));
             streamer.Stream(DeltaTime.FromFloat(2));
-            Assert.That(streamer.Now, Is.EqualTo(CurrentTime.FromFloat(12.0f)));
+            Assert.That(streamer.Now, Is.EqualTo(WorldTime.FromFloat(12.0f)));
         }
 
         // 時を飛ばす(スキップ)

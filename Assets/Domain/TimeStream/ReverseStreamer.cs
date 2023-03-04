@@ -4,11 +4,11 @@ namespace Film.Domain.TimeStream
 {
     internal class ReverseStreamer : TimeStreamer
     {
-        CurrentTime TimeStreamer.Now => now;
-        CurrentTime now;
+        WorldTime TimeStreamer.Now => now;
+        WorldTime now;
         readonly double factor;
 
-        internal ReverseStreamer(CurrentTime now, double factor)
+        internal ReverseStreamer(WorldTime now, double factor)
         {
             if (factor <= 0)
             {

@@ -4,12 +4,12 @@ namespace Film.Domain.TimeStream
 {
     internal sealed class FastStreamer : TimeStreamer
     {
-        CurrentTime TimeStreamer.Now => now;
+        WorldTime TimeStreamer.Now => now;
 
-        CurrentTime now;
+        WorldTime now;
         readonly double factor;
 
-        internal FastStreamer(CurrentTime now, double factor)
+        internal FastStreamer(WorldTime now, double factor)
         {
             if (factor <= 1.0)
             {

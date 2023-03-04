@@ -5,25 +5,30 @@ namespace Film.Domain.Transport
     internal sealed class FloatLinearTransporter : FloatTransporter
     {
         readonly FromTo fromTo;
-        readonly MoveTime moveTime;
+        readonly ValidatedTime moveTime;
 
         readonly float delta;
 
-        internal FloatLinearTransporter(float from, float to, MoveTime moveTime)
+        internal FloatLinearTransporter(float from, float to, ValidatedTime moveTime)
         {
             fromTo = new FromTo(from, to);
             this.moveTime = moveTime;
 
             var distance = fromTo.Distance;
-            delta = distance / moveTime.Duration;
+            delta = moveTime.Delta(distance);
         }
 
-        float FloatTransporter.Move(CurrentTime now)
+        float FloatTransporter.Move(WorldTime now)
         {
-            var t = now.Seconds - moveTime.Start;
+            var t = moveTime.LocalSeconds(now);
             if (t < 0) t = 0;
             var res = fromTo.From + delta * t;
             return  fromTo.Clamp(res);
+        }
+
+        bool FloatTransporter.Exists(WorldTime now)
+        {
+            return moveTime.Exists(now);
         }
     }
 }

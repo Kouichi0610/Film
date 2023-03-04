@@ -3,16 +3,16 @@ namespace Film.Domain.TimeStream
 {
     internal sealed class SequentialStreamer : TimeStreamer
     {
-        CurrentTime TimeStreamer.Now => now;
+        WorldTime TimeStreamer.Now => now;
 
-        CurrentTime now;
+        WorldTime now;
 
         internal SequentialStreamer()
         {
-            now = CurrentTime.FromFloat(0);
+            now = WorldTime.FromFloat(0);
         }
 
-        internal SequentialStreamer(CurrentTime now)
+        internal SequentialStreamer(WorldTime now)
         {
             this.now = now;
         }
