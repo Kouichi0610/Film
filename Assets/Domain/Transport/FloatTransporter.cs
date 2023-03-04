@@ -5,6 +5,7 @@ namespace Film.Domain.Transport
     public interface FloatTransporter
     {
         float Move(WorldTime now);
+        bool Exists(WorldTime now);
     }
 
     public static class FloatTransporters

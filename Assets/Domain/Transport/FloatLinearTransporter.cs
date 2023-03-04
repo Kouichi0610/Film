@@ -25,5 +25,10 @@ namespace Film.Domain.Transport
             var res = fromTo.From + delta * t;
             return  fromTo.Clamp(res);
         }
+
+        bool FloatTransporter.Exists(WorldTime now)
+        {
+            return moveTime.Exists(now);
+        }
     }
 }

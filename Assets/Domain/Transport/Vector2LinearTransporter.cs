@@ -20,5 +20,9 @@ namespace Film.Domain.Transport
             var y = yTransporter.Move(now);
             return new Vector2(x, y);
         }
+        bool Vector2Transporter.Exists(WorldTime now)
+        {
+            return xTransporter.Exists(now);
+        }
     }
 }

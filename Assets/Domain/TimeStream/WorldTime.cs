@@ -18,6 +18,11 @@ namespace Film.Domain.TimeStream
            return new WorldTime(time);
         }
 
+        public WorldTime AddSeconds(float seconds)
+        {
+            return new WorldTime(Seconds + seconds);
+        }
+
         internal WorldTime Add(DeltaTime delta)
         {
             return new WorldTime(Seconds + delta.Seconds);
@@ -27,6 +32,22 @@ namespace Film.Domain.TimeStream
             var next = Seconds - delta.Seconds;
             if (next < 0) next = 0;
             return new WorldTime(next);
+        }
+
+        public bool Before(WorldTime now)
+        {
+            return Seconds < now.Seconds;
+        }
+
+        public bool After(WorldTime now)
+        {
+            return now.Seconds < Seconds;
+        }
+
+        public bool Exists(WorldTime start, WorldTime end)
+        {
+            return Seconds >= start.Seconds
+                && Seconds <= end.Seconds;
         }
 
         public override int GetHashCode()
