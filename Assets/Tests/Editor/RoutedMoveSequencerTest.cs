@@ -20,7 +20,7 @@ namespace Film.Tests
     /// ・スキップ確認
     /// 
     /// </summary>
-    public class MoveSequencerTest
+    public class RoutedMoveSequencerTest
     {
 
         [Test, Order(0)]
@@ -89,8 +89,5 @@ namespace Film.Tests
             Assert.That(builder.Duration(), Is.EqualTo(20));
 
         }
-
-        #region テスト用実装
-        #endregion
     }
 }
