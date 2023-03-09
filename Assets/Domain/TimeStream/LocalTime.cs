@@ -6,11 +6,11 @@ namespace Film.Domain.TimeStream
     /// </summary>
     public struct LocalTime
     {
-        float StartedSeconds;
+        WorldTime started;
 
         LocalTime(WorldTime now)
         {
-            StartedSeconds = now.Seconds;
+            started = now;
         }
 
         public static LocalTime FromWorldTime(WorldTime now)
@@ -20,7 +20,7 @@ namespace Film.Domain.TimeStream
 
         public float LocalSeconds(WorldTime now)
         {
-            return now.Seconds - StartedSeconds;
+            return now.ElaspedTime(started);
         }
 
         public bool Created(WorldTime now)
@@ -30,7 +30,7 @@ namespace Film.Domain.TimeStream
 
         public override string ToString()
         {
-            return string.Format("LocalTime since:{0}(seconds)", StartedSeconds);
+            return string.Format("LocalTime {0}(seconds)", started);
         }
     }
 }

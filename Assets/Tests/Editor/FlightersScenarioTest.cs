@@ -29,7 +29,7 @@ namespace Film.Tests
     /// </summary>
     public class FlightersScenarioTest
     {
-        #region インターフェイス仮実装
+        #region 仮実装
 
         /// <summary>
         /// ・生存中であればEntityLenderから借りる、退場時に返却
@@ -168,7 +168,7 @@ namespace Film.Tests
             Assert.That(false, Is.True);
         }
 
-        #region テスト用実装
+        // 以下、テスト用実装
 
         public interface ExperimentLender
         {
@@ -215,7 +215,6 @@ namespace Film.Tests
                 this.position = position;
             }
         }
-        #endregion
 
     }
 }

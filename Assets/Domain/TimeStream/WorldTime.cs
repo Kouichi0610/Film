@@ -6,7 +6,7 @@ namespace Film.Domain.TimeStream
     /// </summary>
     public struct WorldTime
     {
-        public float Seconds;
+        float Seconds;
 
         internal WorldTime(float time)
         {
@@ -54,6 +54,14 @@ namespace Film.Domain.TimeStream
             return Seconds >= start.Seconds
                 && Seconds <= end.Seconds;
         }
+
+
+        public float ElaspedTime(WorldTime from)
+        {
+            return Seconds - from.Seconds;
+        }
+
+
 
         public override int GetHashCode()
         {

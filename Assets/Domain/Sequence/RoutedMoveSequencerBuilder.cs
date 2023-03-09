@@ -61,7 +61,7 @@ namespace Film.Domain.Sequence
 
         public float Duration()
         {
-            return end.Seconds - start.Seconds;
+            return end.ElaspedTime(start);
         }
     }
 }
