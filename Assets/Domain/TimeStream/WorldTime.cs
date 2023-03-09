@@ -34,6 +34,11 @@ namespace Film.Domain.TimeStream
             return new WorldTime(next);
         }
 
+        public bool Past(WorldTime now)
+        {
+            return Seconds <= now.Seconds;
+        }
+
         public bool Before(WorldTime now)
         {
             return Seconds < now.Seconds;

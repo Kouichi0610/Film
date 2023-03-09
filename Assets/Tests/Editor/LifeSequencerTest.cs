@@ -12,134 +12,55 @@ namespace Film.Tests
 {
     public class LifeSequencerTest
     {
-        #region 仮実装
-        public sealed class LifeSequencerBuilder
+        [Test, Order(0)]
+        public void LifeSequencer_初期ヒットポイントを設定()
         {
-            WorldTime start;
-            float duration = 0;
-            int hitPoint = 0;
-
-            public static LifeSequencerBuilder Start(WorldTime start)
-            {
-                return new LifeSequencerBuilder(start);
-            }
-            public LifeSequencerBuilder(WorldTime start)
-            {
-                this.start = start;
-            }
-            public LifeSequencerBuilder Duration(float duration)
-            {
-                this.duration = duration;
-                return this;
-            }
-            public LifeSequencerBuilder HitPoint(int hp)
-            {
-                hitPoint = hp;
-                return this;
-            }
-            public LifeSequencer Build()
-            {
-                if (hitPoint <= 0)
-                {
-                    throw new ArgumentException(string.Format("illegal HitPoint:{0}", hitPoint));
-                }
-                if (duration <= 0)
-                {
-                    throw new ArgumentException(string.Format("illegal Duration:{0}", duration));
-                }
-                return new LifeSequencer(start, duration, hitPoint);
-            }
+            var sequencer = LifeSequencer.FromHitPoint(100);
+            Assert.That(sequencer, Is.Not.Null);
         }
 
-        public sealed class LifeSequencer
-        {
-            readonly ValidatedTime validatedTime;
-            readonly int hitPoint;
-
-            internal LifeSequencer(WorldTime start, float duration, int hitPoint)
-            {
-                validatedTime = ValidatedTime.FromWorldTimeAndDuration(start, duration);
-                this.hitPoint = hitPoint;
-            }
-
-            public bool Exists(WorldTime now)
-            {
-                return validatedTime.Exists(now);
-            }
-
-        }
-        #endregion
-
-        [Test, Order(1)]
-        public void LifeSequencer_開始時刻と生存時間_HitPointを指定()
-        {
-            var builder = LifeSequencerBuilder.Start(WorldTime.FromFloat(15.0f))
-                .Duration(15.0f)
-                .HitPoint(100);
-            Assert.That(builder.Build, Is.Not.Null);
-        }
-        [Test, Order(1)]
-        public void LifeSequencer_生存期間を指定しないと例外を投げること()
-        {
-            var builder = LifeSequencerBuilder.Start(WorldTime.FromFloat(15.0f))
-                .HitPoint(100);
-            Assert.Throws<ArgumentException>(() =>
-            {
-                builder.Build();
-            });
-        }
         [Test, Order(2)]
-        public void LifeSequencer_生存期間エラー()
+        public void LifeSequencer_ダメージログを取り特定の時刻のヒットポイントを返す()
         {
-            var builder = LifeSequencerBuilder.Start(WorldTime.FromFloat(15.0f))
-                .HitPoint(100)
-                .Duration(-1);
-            Assert.Throws<ArgumentException>(() =>
-            {
-                builder.Build();
-            });
+            var sequencer = LifeSequencer.FromHitPoint(100);
+            sequencer.Damage(12, WorldTime.FromFloat(15.0f));
+            sequencer.Damage(5, WorldTime.FromFloat(16.0f));
+            sequencer.Damage(8, WorldTime.FromFloat(20.0f));
+            Assert.That(sequencer.HitPoint(WorldTime.FromFloat(14.9f)), Is.EqualTo(100));
+            Assert.That(sequencer.HitPoint(WorldTime.FromFloat(15.0f)), Is.EqualTo(88));
+            Assert.That(sequencer.HitPoint(WorldTime.FromFloat(15.9f)), Is.EqualTo(88));
+            Assert.That(sequencer.HitPoint(WorldTime.FromFloat(16.0f)), Is.EqualTo(83));
+            Assert.That(sequencer.HitPoint(WorldTime.FromFloat(19.9f)), Is.EqualTo(83));
+            Assert.That(sequencer.HitPoint(WorldTime.FromFloat(20.0f)), Is.EqualTo(75));
         }
         [Test, Order(3)]
-        public void LifeSequencer_ヒットポイントを指定しないと例外を投げること()
+        public void LifeSequencer_0未満にならないこと()
         {
-            var builder = LifeSequencerBuilder.Start(WorldTime.FromFloat(15.0f))
-                .Duration(10);
-            Assert.Throws<ArgumentException>(() =>
-            {
-                builder.Build();
-            });
-        }
-        [Test, Order(4)]
-        public void LifeSequencer_ヒットポイントエラー()
-        {
-            var builder = LifeSequencerBuilder.Start(WorldTime.FromFloat(15.0f))
-                .Duration(10)
-                .HitPoint(-1);
-            Assert.Throws<ArgumentException>(() =>
-            {
-                builder.Build();
-            });
-        }
-        [Test, Order(5)]
-        public void LifeSequencer_生存期間を判定()
-        {
-            var builder = LifeSequencerBuilder.Start(WorldTime.FromFloat(15.0f))
-                .Duration(5.0f)
-                .HitPoint(10);
-            var lifeSequencer = builder.Build();
+            var sequencer = LifeSequencer.FromHitPoint(100);
+            sequencer.Damage(150, WorldTime.FromFloat(15.0f));
+            Assert.That(sequencer.HitPoint(WorldTime.FromFloat(20)), Is.Zero);
 
-            Assert.That(lifeSequencer.Exists(WorldTime.FromFloat(14.9f)), Is.False);
-            Assert.That(lifeSequencer.Exists(WorldTime.FromFloat(15.0f)), Is.True);
-            Assert.That(lifeSequencer.Exists(WorldTime.FromFloat(17.5f)), Is.True);
-            Assert.That(lifeSequencer.Exists(WorldTime.FromFloat(20.0f)), Is.True);
-            Assert.That(lifeSequencer.Exists(WorldTime.FromFloat(20.1f)), Is.False);
         }
 
-        [Test]
-        public void TODO_HitPointと生存期間を分ける()
+        [Test, Order(2)]
+        public void LifeSequencer_死亡確認()
         {
-            Assert.Fail("TODO");
+            var sequencer = LifeSequencer.FromHitPoint(100);
+            sequencer.Damage(90, WorldTime.FromFloat(15.0f));
+            Assert.That(sequencer.Defeated(WorldTime.FromFloat(15.0f)), Is.False);
+            sequencer.Damage(10, WorldTime.FromFloat(16.0f));
+            Assert.That(sequencer.Defeated(WorldTime.FromFloat(16.0f)), Is.True);
+        }
 
+        [Test, Order(3)]
+        public void LifeSequencer_過去からやりなおす_発生する予定のダメージが無かったことになっていること()
+        {
+            var sequencer = LifeSequencer.FromHitPoint(100);
+            sequencer.Damage(10, WorldTime.FromFloat(15.0f));
+            sequencer.Damage(15, WorldTime.FromFloat(18.0f));
+            Assert.That(sequencer.HitPoint(WorldTime.FromFloat(18.0f)), Is.EqualTo(75));
+            var redoSequencer = sequencer.Rewind(WorldTime.FromFloat(15.0f));
+            Assert.That(redoSequencer.HitPoint(WorldTime.FromFloat(18.0f)), Is.EqualTo(90));
         }
 
     }

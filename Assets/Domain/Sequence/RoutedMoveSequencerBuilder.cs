@@ -6,7 +6,7 @@ using Film.Domain.Transport;
 
 namespace Film.Domain.Sequence
 {
-    public sealed class MoveSequencerBuilder
+    public sealed class RoutedMoveSequencerBuilder
     {
         Vector2 from;
         WorldTime currentStart;
@@ -15,12 +15,12 @@ namespace Film.Domain.Sequence
         List<Vector2Transporter> transporters = new List<Vector2Transporter>();
         readonly Vector2Transporter before;
 
-        public static MoveSequencerBuilder Start(Vector2 startPosition, WorldTime startTime)
+        public static RoutedMoveSequencerBuilder Start(Vector2 startPosition, WorldTime startTime)
         {
-            return new MoveSequencerBuilder(startPosition, startTime);
+            return new RoutedMoveSequencerBuilder(startPosition, startTime);
         }
 
-        MoveSequencerBuilder(Vector2 startPosition, WorldTime worldTime)
+        RoutedMoveSequencerBuilder(Vector2 startPosition, WorldTime worldTime)
         {
             from = startPosition;
             currentStart = worldTime;
@@ -28,7 +28,7 @@ namespace Film.Domain.Sequence
             before = Vector2Transporters.BeforeLiving(startPosition, worldTime);
         }
 
-        public MoveSequencerBuilder LinearMoveTo(Vector2 to, float duration)
+        public RoutedMoveSequencerBuilder LinearMoveTo(Vector2 to, float duration)
         {
             var validatedTime = ValidatedTime.FromWorldTimeAndDuration(currentStart, duration);
             var transporter = Vector2Transporters.Linear(from, to, validatedTime);
@@ -39,11 +39,11 @@ namespace Film.Domain.Sequence
             return this;
         }
 
-        public MoveSequencerBuilder Stay(float duration)
+        public RoutedMoveSequencerBuilder Stay(float duration)
         {
             return LinearMoveTo(from, duration);
         }
-        public MoveSequencer Build()
+        public RoutedMoveSequencer Build()
         {
             if (transporters.Count == 0)
             {
@@ -56,7 +56,7 @@ namespace Film.Domain.Sequence
             var after = Vector2Transporters.AfterLiving(from, end);
             buildList.Add(after);
 
-            return new MoveSequencer(buildList);
+            return new RoutedMoveSequencer(buildList);
         }
 
         public float Duration()
