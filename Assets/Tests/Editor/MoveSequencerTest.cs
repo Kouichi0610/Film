@@ -24,7 +24,7 @@ namespace Film.Tests
     {
 
         [Test, Order(0)]
-        public void MoveSequencerBuilder_まず初期位置と開始時刻を設定する_これだけでは例外を投げること()
+        public void RoutedMoveSequencerBuilder_まず初期位置と開始時刻を設定する_これだけでは例外を投げること()
         {
             var builder = RoutedMoveSequencerBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f));
 
@@ -34,7 +34,7 @@ namespace Film.Tests
             });
         }
         [Test, Order(1)]
-        public void MoveSequencerBuilder_一つ以上の目的位置を設定するとMoveSequencerを生成できること()
+        public void RoutedMoveSequencerBuilder_一つ以上の目的位置を設定するとMoveSequencerを生成できること()
         {
             var builder = RoutedMoveSequencerBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f))
                 .LinearMoveTo(new Vector2(15.0f, -15.0f), 10.0f);
@@ -42,7 +42,7 @@ namespace Film.Tests
             Assert.That(sequencer, Is.Not.Null);
         }
         [Test, Order(2)]
-        public void MoveSequencerBuilder_移動時間に0以下を設定できないこと()
+        public void RoutedMoveSequencerBuilder_移動時間に0以下を設定できないこと()
         {
             var builder = RoutedMoveSequencerBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f));
 
@@ -56,7 +56,7 @@ namespace Film.Tests
             });
         }
         [Test, Order(3)]
-        public void MoveSequencerBuilder_一定時間停止を設定できること()
+        public void RoutedMoveSequencerBuilder_一定時間停止を設定できること()
         {
             var builder = RoutedMoveSequencerBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f))
                 .Stay(10.0f);
@@ -81,7 +81,7 @@ namespace Film.Tests
         }
 
         [Test, Order(6)]
-        public void MoveSequencerBuilder_Duration()
+        public void RoutedMoveSequencerBuilder_Duration()
         {
             var builder = RoutedMoveSequencerBuilder.Start(new Vector2(15, 30), WorldTime.FromFloat(15.0f))
                 .Stay(10.0f)

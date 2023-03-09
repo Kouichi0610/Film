@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Film.Domain.Sequence
 {
-    public sealed class RoutedMoveSequencer
+    internal sealed class RoutedMoveSequencer : MoveSequencer
     {
         readonly IReadOnlyList<Vector2Transporter> transporters;
         readonly Vector2Transporter before;
@@ -19,7 +19,7 @@ namespace Film.Domain.Sequence
             before = transporters.First();
             after = transporters.Last();
         }
-        public Vector2 Move(WorldTime now)
+        Vector2 MoveSequencer.Move(WorldTime now)
         {
             foreach (var transporter in transporters)
             {
@@ -29,7 +29,7 @@ namespace Film.Domain.Sequence
             throw new ArgumentOutOfRangeException(string.Format("Can not Time {0}", now));
         }
 
-        public bool Exists(WorldTime now)
+        bool MoveSequencer.Exists(WorldTime now)
         {
             if (before.Exists(now)) return false;
             if (after.Exists(now)) return false;

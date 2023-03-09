@@ -43,7 +43,7 @@ namespace Film.Domain.Sequence
         {
             return LinearMoveTo(from, duration);
         }
-        public RoutedMoveSequencer Build()
+        public MoveSequencer Build()
         {
             if (transporters.Count == 0)
             {

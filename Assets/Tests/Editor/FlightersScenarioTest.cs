@@ -55,13 +55,13 @@ namespace Film.Tests
             readonly EntityLender lender;
             readonly LifeSequencer life;
 
-            readonly RoutedMoveSequencer mover;
+            readonly MoveSequencer mover;
             delegate void UpdateAction(WorldTime now);
 
             Entity entity = null;
             UpdateAction update;
 
-            public FlightersScenario(EntityLender lender, RoutedMoveSequencer mover, LifeSequencer life)
+            public FlightersScenario(EntityLender lender, MoveSequencer mover, LifeSequencer life)
             {
                 this.lender = lender;
                 this.mover = mover;
@@ -109,7 +109,7 @@ namespace Film.Tests
         #endregion
 
         LenderForTest testLender;
-        RoutedMoveSequencer moveSequencer;
+        MoveSequencer moveSequencer;
         LifeSequencer lifeSequencer;
 
         ExperimentLender experiment;
