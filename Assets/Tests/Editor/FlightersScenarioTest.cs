@@ -121,7 +121,7 @@ namespace Film.Tests
             moveSequencer = RoutedMoveSequencerBuilder.Start(new Vector2(5, 0), WorldTime.FromFloat(10.0f))
                 .LinearMoveTo(new Vector2(10, 5), 10)
                 .Build();
-            lifeSequencer = LifeSequencer.FromHitPoint(10);
+            lifeSequencer = LifeSequencers.Breakable(10);
             experiment = testLender;
         }
 

@@ -7,5 +7,6 @@ namespace Film.Domain.Sequence
     {
         Vector2 Move(WorldTime now);
         bool Exists(WorldTime now);
+        void Rewind(WorldTime redo);
     }
 }

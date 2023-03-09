@@ -35,5 +35,9 @@ namespace Film.Domain.Sequence
             if (after.Exists(now)) return false;
             return true;
         }
+
+        void MoveSequencer.Rewind(WorldTime redo)
+        {
+        }
     }
 }
