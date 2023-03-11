@@ -1,0 +1,17 @@
+{
+    "name": "Film.Domain.LifeSequence",
+    "rootNamespace": "Film.Domain.LifeSequence",
+    "references": [
+        "GUID:3bacffd7d37bd9b488738c63047c1060",
+        "GUID:2349054a0e954324da1d6a4a9e4ea1f9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

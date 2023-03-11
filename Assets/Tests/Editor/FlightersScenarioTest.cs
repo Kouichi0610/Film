@@ -6,6 +6,8 @@ using UnityEngine.TestTools;
 using Film.Domain.TimeStream;
 using Film.Domain.Transport;
 using Film.Domain.Sequence;
+using Film.Domain.MoveSequence;
+using Film.Domain.LifeSequence;
 
 namespace Film.Tests
 {
@@ -118,7 +120,7 @@ namespace Film.Tests
         public void CreateLender()
         {
             testLender = new LenderForTest();
-            moveSequencer = RoutedMoveSequencerBuilder.Start(new Vector2(5, 0), WorldTime.FromFloat(10.0f))
+            moveSequencer = RoutedBuilder.Start(new Vector2(5, 0), WorldTime.FromFloat(10.0f))
                 .LinearMoveTo(new Vector2(10, 5), 10)
                 .Build();
             lifeSequencer = LifeSequencers.Breakable(10);
@@ -133,7 +135,7 @@ namespace Film.Tests
         }
 
         [Test, Order(1)]
-        public void 移動期間中はEntityLenderからEntityを借りていること()
+        public void Updateにて状態を更新する_移動期間中はEntityLenderからEntityを借りていること()
         {
             var scenario = new FlightersScenario(testLender, moveSequencer, lifeSequencer);
             scenario.Update(WorldTime.FromFloat(9.9f));
@@ -161,7 +163,16 @@ namespace Film.Tests
             Assert.That(expEntity.Position, Is.EqualTo(new Vector2(10, 5)));
         }
 
-        // 与える？
+        /// <summary>
+        /// Entity同士の当たり判定を取る
+        /// 
+        /// 当たった対象を利用しているScenarioにダメージを与える
+        /// 
+        /// ・1回だけ
+        /// ・継続して
+        /// 
+        /// </summary>
+
         [Test, Order(3)]
         public void 移動期間中に当たったEntityからダメージを受けること()
         {

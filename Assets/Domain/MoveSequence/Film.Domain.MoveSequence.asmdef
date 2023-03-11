@@ -1,0 +1,17 @@
+{
+    "name": "Film.Domain.MoveSequence",
+    "rootNamespace": "Film.Domain.MoveSequence",
+    "references": [
+        "GUID:3bacffd7d37bd9b488738c63047c1060",
+        "GUID:f0eebb6d5a227594e90c5c70f5cb1069"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -5,7 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Film.Domain.TimeStream;
-using Film.Domain.Sequence;
+using Film.Domain.MoveSequence;
 
 namespace Film.Tests
 {
@@ -22,11 +22,10 @@ namespace Film.Tests
     /// </summary>
     public class RoutedMoveSequencerTest
     {
-
         [Test, Order(0)]
         public void RoutedMoveSequencerBuilder_まず初期位置と開始時刻を設定する_これだけでは例外を投げること()
         {
-            var builder = RoutedMoveSequencerBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f));
+            var builder = RoutedBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f));
 
             Assert.Throws<ArgumentException>(() =>
             {
@@ -36,7 +35,7 @@ namespace Film.Tests
         [Test, Order(1)]
         public void RoutedMoveSequencerBuilder_一つ以上の目的位置を設定するとMoveSequencerを生成できること()
         {
-            var builder = RoutedMoveSequencerBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f))
+            var builder = RoutedBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f))
                 .LinearMoveTo(new Vector2(15.0f, -15.0f), 10.0f);
             var sequencer = builder.Build();
             Assert.That(sequencer, Is.Not.Null);
@@ -44,7 +43,7 @@ namespace Film.Tests
         [Test, Order(2)]
         public void RoutedMoveSequencerBuilder_移動時間に0以下を設定できないこと()
         {
-            var builder = RoutedMoveSequencerBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f));
+            var builder = RoutedBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f));
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
@@ -58,7 +57,7 @@ namespace Film.Tests
         [Test, Order(3)]
         public void RoutedMoveSequencerBuilder_一定時間停止を設定できること()
         {
-            var builder = RoutedMoveSequencerBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f))
+            var builder = RoutedBuilder.Start(new Vector2(0, 0), WorldTime.FromFloat(15.0f))
                 .Stay(10.0f);
             var sequencer = builder.Build();
             Assert.That(sequencer, Is.Not.Null);
@@ -67,7 +66,7 @@ namespace Film.Tests
         [Test, Order(5)]
         public void MoveSequencer_時刻と位置が対応していること()
         {
-            var builder = RoutedMoveSequencerBuilder.Start(new Vector2(15, 30), WorldTime.FromFloat(15.0f))
+            var builder = RoutedBuilder.Start(new Vector2(15, 30), WorldTime.FromFloat(15.0f))
                 .Stay(10.0f)
                 .LinearMoveTo(new Vector2(8, 36), 10.0f);
             var sequencer = builder.Build();
@@ -83,7 +82,7 @@ namespace Film.Tests
         [Test, Order(6)]
         public void RoutedMoveSequencerBuilder_Duration()
         {
-            var builder = RoutedMoveSequencerBuilder.Start(new Vector2(15, 30), WorldTime.FromFloat(15.0f))
+            var builder = RoutedBuilder.Start(new Vector2(15, 30), WorldTime.FromFloat(15.0f))
                 .Stay(10.0f)
                 .LinearMoveTo(new Vector2(8, 36), 10.0f);
             Assert.That(builder.Duration(), Is.EqualTo(20));

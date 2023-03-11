@@ -1,34 +1,36 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using Film.Domain.TimeStream;
+using Film.Domain.Entity;
 
-namespace Film.Domain.Sequence
+namespace Film.Domain.LifeSequence
 {
-    internal class BreakableLifeSequencer : LifeSequencer
+    internal sealed class Breakable : LifeSequencer, DamageReceiver
     {
         readonly int fullHitPoint;
         Logger damageLog;
 
-        internal BreakableLifeSequencer(int fullHitPoint)
+        internal Breakable(int fullHitPoint)
         {
             this.fullHitPoint = fullHitPoint;
             damageLog = new Logger();
         }
-        void LifeSequencer.Damage(int damagePoint, WorldTime now)
-        {
-            damageLog.Damage(damagePoint, now);
-        }
+
+        DamageReceiver LifeSequencer.DamageReceiver => this;
 
         bool LifeSequencer.Living(WorldTime now)
         {
             return fullHitPoint > damageLog.TotalDamage(now);
         }
 
-        void LifeSequencer.Rewind(WorldTime redo)
+        void LifeSequencer.Rewind(WorldTime redoTime)
         {
-            damageLog = damageLog.Rewind(redo);
+            damageLog = damageLog.Rewind(redoTime);
         }
 
+        void DamageReceiver.Damage(int damagePoint, WorldTime now)
+        {
+            damageLog.Damage(damagePoint, now);
+        }
         class Logger
         {
             List<Log> damageLog = new List<Log>();
@@ -84,6 +86,5 @@ namespace Film.Domain.Sequence
                 return string.Format("Damage:{0} at {1}", Damage, Time);
             }
         }
-
     }
 }

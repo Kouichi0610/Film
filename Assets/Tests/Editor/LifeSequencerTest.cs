@@ -5,8 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Film.Domain.TimeStream;
-using Film.Domain.Transport;
-using Film.Domain.Sequence;
+using Film.Domain.LifeSequence;
 
 namespace Film.Tests
 {
@@ -16,7 +15,8 @@ namespace Film.Tests
         public void Invincible_ダメージの影響を受けないこと()
         {
             var sequencer = LifeSequencers.Invincible();
-            sequencer.Damage(int.MaxValue, WorldTime.FromFloat(10));
+            var receiver = sequencer.DamageReceiver;
+            receiver.Damage(int.MaxValue, WorldTime.FromFloat(10));
             Assert.That(sequencer.Living(WorldTime.FromFloat(10)), Is.True);
         }
 
@@ -31,9 +31,10 @@ namespace Film.Tests
         public void Breakable_ヒットポイントを超えるダメージを受けると死亡扱いになること()
         {
             var sequencer = LifeSequencers.Breakable(100);
-            sequencer.Damage(90, WorldTime.FromFloat(15.0f));
+            var receiver = sequencer.DamageReceiver;
+            receiver.Damage(90, WorldTime.FromFloat(15.0f));
             Assert.That(sequencer.Living(WorldTime.FromFloat(15.0f)), Is.True);
-            sequencer.Damage(10, WorldTime.FromFloat(16.0f));
+            receiver.Damage(10, WorldTime.FromFloat(16.0f));
             Assert.That(sequencer.Living(WorldTime.FromFloat(16.0f)), Is.False);
         }
 
@@ -41,7 +42,8 @@ namespace Film.Tests
         public void Breakable_Rewind以降のダメージが無かったことになっていること()
         {
             var sequencer = LifeSequencers.Breakable(100);
-            sequencer.Damage(100, WorldTime.FromFloat(10.0f));
+            var receiver = sequencer.DamageReceiver;
+            receiver.Damage(100, WorldTime.FromFloat(10.0f));
             Assert.That(sequencer.Living(WorldTime.FromFloat(10.0f)), Is.False);
             sequencer.Rewind(WorldTime.FromFloat(9.9f));
             Assert.That(sequencer.Living(WorldTime.FromFloat(10.0f)), Is.True);
